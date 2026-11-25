@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisión en sitio de anclas para columnas — Park In Tlal — Bodega 18A | GRUPO ARCA</title>
+<meta name="description" content="Verificación topográfica de anclas coladas previa al montaje de la estructura metálica">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="img/logo-arca.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --negro:#211915; --rojo:#C3360E; --gris:#6B6B6B; --gris-cl:#F2F0EE; --linea:#E2DDD6;
+  --fondo:#FAF8F5; --papel:#FFFFFF; --tinta:#211915;
+  --proy:#2E7D32; --obra:#D7261E; --base:#1F5FBF; --prop:#C98A00;
+  --sombra:0 1px 2px rgba(33,25,21,.06),0 4px 16px rgba(33,25,21,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--fondo);color:var(--tinta);font:15px/1.55 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:Barlow,Inter,sans-serif;line-height:1.15;margin:0}
+a{color:var(--rojo)}
+.wrap{max-width:1320px;margin:0 auto;padding:0 24px}
+/* membrete */
+.top{background:var(--papel);border-bottom:3px solid var(--rojo);box-shadow:0 2px 0 var(--negro)}
+.top .wrap{display:flex;align-items:center;gap:20px;padding-top:12px;padding-bottom:10px}
+.top img{height:44px;width:auto}
+.top .meta{margin-left:auto;text-align:right;font-size:12.5px;color:var(--gris)}
+.top .meta b{display:block;color:var(--negro);font:700 14px Barlow;letter-spacing:.06em;text-transform:uppercase}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:8px;font-weight:600;font-size:13.5px;text-decoration:none;border:1.5px solid var(--negro);color:var(--negro);background:var(--papel);cursor:pointer}
+.btn.primario{background:var(--rojo);border-color:var(--rojo);color:#fff}
+.btn svg{width:16px;height:16px}
+/* portada: diagnóstico 3D + resumen */
+.diag{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:18px;padding:18px 0 8px}
+.visor{position:relative;height:min(78vh,760px);min-height:520px;border-radius:14px;overflow:hidden;background:linear-gradient(#eef0f2,#dfe3e7);box-shadow:var(--sombra)}
+.visor canvas{display:block}
+.visor .capas,.visor .vistas,.visor .simb{z-index:5}
+.visor .carga{position:absolute;inset:0;display:grid;place-items:center;color:var(--gris)}
+.visor .capas{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.95);border-radius:10px;padding:8px 12px;font-size:12.5px;box-shadow:var(--sombra);max-width:250px}
+.visor .capas summary{cursor:pointer;font:700 13px Barlow;text-transform:uppercase;letter-spacing:.05em;list-style:none}
+.visor .capas label{display:flex;align-items:center;gap:7px;margin:3px 0;cursor:pointer}
+.visor .vistas{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:6px}
+.visor .vistas button{font:600 13px Inter;padding:7px 12px;border-radius:8px;border:none;background:rgba(33,25,21,.88);color:#fff;cursor:pointer;text-align:left}
+.visor .vistas button.on{background:var(--rojo)}
+.visor .simb{position:absolute;left:12px;bottom:12px;right:12px;display:flex;flex-wrap:wrap;gap:6px 14px;background:rgba(255,255,255,.95);border-radius:10px;padding:8px 12px;font-size:12px;box-shadow:var(--sombra)}
+.simb span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.simb i{display:inline-block;flex:none}
+.i-proy{width:5px;height:16px;border-radius:2px;background:var(--proy)}
+.i-obra{width:5px;height:16px;border-radius:2px;background:var(--obra)}
+.i-base{width:9px;height:9px;border-radius:50%;background:var(--base)}
+.i-pplaca{width:18px;height:11px;border:2px solid var(--proy);background:rgba(46,125,50,.15)}
+.i-prop{width:18px;height:11px;border:2px solid var(--prop);background:rgba(201,138,0,.25)}
+.i-des{width:18px;height:0;border-top:2.5px solid var(--obra)}
+.i-dpl{width:18px;height:0;border-top:2.5px solid var(--base)}
+.i-hp{width:11px;height:11px;border-radius:50%;border:2px solid var(--proy)}
+.i-ho{width:11px;height:11px;border-radius:50%;background:var(--obra)}
+.i-hb{width:11px;height:11px;border-radius:50%;border:2px solid var(--prop)}
+.etq{font:600 11.5px Inter;color:#fff;background:rgba(33,25,21,.86);padding:2px 7px;border-radius:5px;white-space:nowrap}
+.etq.ancla{background:var(--obra);font-size:10.5px;padding:1px 5px}
+.etq.cota{background:var(--prop);color:#211915}
+.etq.cota.v{background:var(--proy);color:#fff}
+.etq.eje{background:#fff;color:var(--negro);border:1.5px solid var(--negro);border-radius:50%;width:26px;height:26px;display:grid;place-items:center;padding:0}
+.resumen{background:var(--papel);border-radius:14px;box-shadow:var(--sombra);padding:20px 22px;display:flex;flex-direction:column;gap:12px;max-height:min(78vh,760px);min-height:520px;overflow:auto}
+.resumen .proy{font-size:12px;color:var(--gris);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.resumen h1{font-size:25px}
+.resumen h3{font:700 13px Barlow;text-transform:uppercase;letter-spacing:.06em;color:var(--rojo);margin:4px 0 2px}
+.resumen p,.resumen li{font-size:13.5px;margin:0}
+.resumen ul{margin:0;padding-left:18px}.resumen li{margin:3px 0}
+.mini{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.mini div{background:var(--gris-cl);border-radius:8px;padding:7px 8px;font-size:11px;color:var(--gris);line-height:1.25}
+.mini b{display:block;font:700 18px Barlow;color:var(--negro)}
+.mini .r b{color:var(--rojo)}
+.fotos2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fotos2 figure{margin:0;cursor:zoom-in}
+.fotos2 img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;display:block}
+.fotos2 figcaption{font-size:11px;color:var(--gris);margin-top:3px;line-height:1.3}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+/* navegación */
+nav.toc{position:sticky;top:0;z-index:20;background:rgba(250,248,245,.95);backdrop-filter:blur(6px);border-bottom:1px solid var(--linea);margin-top:14px}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:7px;padding-bottom:7px;scrollbar-width:none}
+nav.toc a{white-space:nowrap;text-decoration:none;color:var(--gris);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px}
+nav.toc a:hover,nav.toc a.on{color:var(--negro);background:var(--gris-cl)}
+/* fichas desplegables */
+.fichas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-top:18px}
+details.ficha{min-width:0;background:var(--papel);border-radius:10px;box-shadow:var(--sombra);border-left:4px solid var(--negro)}
+details.ficha.ancha{grid-column:1/-1}
+details.ficha>summary{cursor:pointer;list-style:none;padding:11px 16px;display:flex;align-items:center;gap:10px;font:700 16px Barlow}
+details.ficha>summary::-webkit-details-marker{display:none}
+details.ficha>summary .n{color:var(--rojo);font-size:14px;min-width:22px}
+details.ficha>summary .res{min-width:0;font:400 13px Inter;color:var(--gris);margin-left:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+details.ficha>summary::after{content:'+';margin-left:auto;font:600 20px Inter;color:var(--gris)}
+details.ficha[open]>summary::after{content:'–'}
+details.ficha[open]{border-left-color:var(--rojo)}
+details.ficha .cuerpo{padding:0 18px 16px;font-size:14px}
+details.ficha .cuerpo p{margin:0 0 8px}
+details.ficha .cuerpo ul{margin:0;padding-left:20px}
+details.ficha .cuerpo li{margin:3px 0}
+.datos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--linea);border:1px solid var(--linea);border-radius:8px;overflow:hidden}
+.datos div{background:var(--papel);padding:8px 12px;font-size:13px}
+.datos span{display:block;color:var(--gris);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+/* secciones abiertas */
+section{padding:30px 0 6px}
+section h2{font-size:24px;display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+section h2 .n{color:var(--rojo);font-size:17px;min-width:24px}
+section h3{font-size:17px;margin:20px 0 10px}
+.card{background:var(--papel);border-radius:12px;box-shadow:var(--sombra);padding:18px 20px}
+.card p{margin:0 0 8px}
+.nota{font-size:12.5px;color:var(--gris);border-left:3px solid var(--prop);background:#fff8e8;padding:9px 13px;border-radius:0 8px 8px 0;margin-top:12px}
+.tabla{width:100%;border-collapse:collapse;font-size:13px}
+.tabla th{background:var(--negro);color:#fff;text-align:left;font-weight:600;padding:7px 9px;font-size:12px;white-space:nowrap}
+.tabla td{white-space:nowrap;padding:6px 9px;border-bottom:1px solid var(--linea);font-variant-numeric:tabular-nums}
+.tabla td.num,.tabla th.num{text-align:right}
+.scroll{overflow-x:auto}
+.chip{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:600}
+.chip.r{background:#fde5dc;color:#9b2a09}.chip.a{background:#fff1cc;color:#7a5400}.chip.v{background:#e3f2e4;color:#1d5e21}
+.dados-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 10px}
+.dados-tabs button{font:600 14px Inter;padding:7px 13px;border-radius:8px;border:1.5px solid var(--linea);background:var(--papel);cursor:pointer;color:var(--negro)}
+.dados-tabs button.on{background:var(--negro);color:#fff;border-color:var(--negro)}
+.dado-grid{display:grid;grid-template-columns:minmax(320px,470px) 1fr;gap:18px;align-items:start}
+.plan-box{background:var(--papel);border-radius:12px;box-shadow:var(--sombra);padding:14px}
+.plan-box svg{width:100%;height:auto;display:block}
+.simb.lista span{white-space:normal}
+.simb.lista{flex-direction:column;align-items:flex-start;display:flex;gap:5px;font-size:12.5px;margin-top:10px;border-top:1px solid var(--linea);padding-top:10px}
+.ctrl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gris);margin:2px 0 8px}
+.dado-res{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.dado-res div{background:var(--gris-cl);border-radius:8px;padding:9px 12px;font-size:12.5px;color:var(--gris)}
+.dado-res b{display:block;font:700 20px Barlow;color:var(--negro)}
+.alts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.alt{background:var(--gris-cl);border-radius:10px;padding:14px 16px;border-top:4px solid var(--gris)}
+.alt.pref{border-top-color:var(--rojo)}
+.alt h4{font:700 16px Barlow;margin:0 0 4px}
+.alt .tag{display:inline-block;background:var(--rojo);color:#fff;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;margin-bottom:6px}
+.alt dt{font-weight:600;font-size:11.5px;color:var(--gris);text-transform:uppercase;letter-spacing:.05em;margin-top:8px}
+.alt dd{margin:2px 0 0;font-size:13.5px}
+.galeria{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.galeria figure{margin:0;background:var(--papel);border-radius:10px;overflow:hidden;box-shadow:var(--sombra);cursor:zoom-in}
+.galeria img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:#ddd}
+.galeria.planos img{aspect-ratio:4/3;object-fit:contain;background:#fff}
+.galeria figcaption{font-size:12.5px;padding:8px 11px;color:var(--gris)}
+.galeria figcaption b{color:var(--negro)}
+.comp{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.comp > div{background:var(--papel);border-radius:12px;box-shadow:var(--sombra);padding:12px}
+.comp img{width:100%;height:auto;display:block;cursor:zoom-in}
+.comp .t{font:700 13px Barlow;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.comp .t.p{color:var(--proy)}.comp .t.o{color:var(--obra)}
+.comp .pie{font-size:12.5px;color:var(--gris);margin-top:6px}
+.lightbox{position:fixed;inset:0;background:rgba(20,15,12,.92);display:none;align-items:center;justify-content:center;z-index:100;flex-direction:column;padding:20px}
+.lightbox.on{display:flex}
+.lightbox img{max-width:94vw;max-height:84vh;border-radius:6px;background:#fff}
+.lightbox p{color:#eee;max-width:900px;text-align:center;font-size:14px}
+.lightbox button{position:absolute;top:14px;right:18px;background:none;border:none;color:#fff;font-size:34px;cursor:pointer}
+.descargas{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.desc{display:flex;gap:14px;align-items:center;background:var(--papel);border-radius:12px;box-shadow:var(--sombra);padding:14px 16px;text-decoration:none;color:var(--negro);border:1.5px solid transparent}
+.desc:hover{border-color:var(--rojo)}
+.desc .ic{width:44px;height:44px;border-radius:10px;background:var(--negro);color:#fff;display:grid;place-items:center;font:700 12px Barlow;flex:none}
+.desc.dwg .ic{background:var(--rojo)}
+.desc b{display:block;font:700 16px Barlow}
+.desc span{font-size:12.5px;color:var(--gris)}
+.firma{text-align:center;padding:40px 0 30px}
+.firma .linea{width:280px;border-top:1.5px solid var(--negro);margin:56px auto 8px}
+.firma b{font:700 17px Barlow}
+footer{border-top:3px solid var(--rojo);background:var(--negro);color:#b8aea6;font-size:12.5px;padding:16px 0;margin-top:20px}
+footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media (max-width:1060px){ .diag{grid-template-columns:1fr} .resumen{max-height:none;min-height:0} }
+@media (max-width:860px){
+  .dado-grid,.alts,.fichas,.comp{grid-template-columns:minmax(0,1fr)}
+  .top .meta{display:none}
+  .visor{height:74vh;min-height:480px}
+  .visor .vistas{top:auto;bottom:auto;top:52px;left:12px;right:12px;flex-direction:row;flex-wrap:wrap}
+  .visor .vistas button{font-size:12px;padding:5px 8px}
+  .visor .simb{font-size:10.5px;gap:3px 10px;padding:6px 9px}
+  .mini{grid-template-columns:repeat(2,1fr)}
+  .wrap{padding:0 14px}
+}
+@media print{ nav.toc,.visor,.btns,.ctrl,.dados-tabs{display:none!important} details.ficha{box-shadow:none} }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <img src="img/logo-arca.png" alt="ARCA Infraestructura &amp; Construcción">
+  <div class="meta"><b id="h-titulo"></b><span id="h-meta"></span></div>
+</div></header>
+
+<div class="wrap">
+  <div class="diag">
+    <div class="visor" id="visor">
+      <div class="carga" id="carga">Cargando modelo 3D…</div>
+      <details class="capas" id="capas" open><summary>Capas y vista</summary>
+        <label><input type="checkbox" data-c="estructura" checked> Modelo estructural</label>
+        <label><input type="checkbox" data-c="proyecto" checked> <i class="i-proy"></i> Proyecto</label>
+        <label><input type="checkbox" data-c="real" checked> <i class="i-obra"></i> En obra (levantamiento)</label>
+        <label><input type="checkbox" data-c="propuesta" checked> <i class="i-prop"></i> Placa propuesta</label>
+        <label><input type="checkbox" data-c="etiquetas" checked> Etiquetas de desfase y cotas</label>
+        <label><input type="checkbox" data-c="muros"> Muros</label>
+        <div style="margin-top:6px">Exagerar desviaciones: <b id="kx">×1</b><input id="exag" type="range" min="1" max="10" step="1" value="1" style="width:100%"></div>
+      </details>
+      <div class="vistas" id="vistas"></div>
+      <div class="simb" id="simb3d">
+        <span><i class="i-proy"></i>Ancla de PROYECTO (CIM-04)</span>
+        <span><i class="i-obra"></i>Ancla EN OBRA (topografía)</span>
+        <span><i class="i-base"></i>Base del ancla en el concreto</span>
+        <span><i class="i-des"></i>Desfase proyecto → obra</span>
+        <span><i class="i-pplaca"></i>Placa de proyecto (barrenos Ø21)</span>
+        <span><i class="i-prop"></i>Placa PROPUESTA (barrenos Ø33 en posición real)</span>
+      </div>
+    </div>
+    <aside class="resumen" id="resumen"></aside>
+  </div>
+</div>
+<nav class="toc"><div class="wrap" id="toc"></div></nav>
+<main class="wrap" id="main"></main>
+
+<div class="lightbox" id="lb"><button aria-label="Cerrar">&times;</button><img alt=""><p></p></div>
+<footer><div class="wrap"><span id="pie-izq"></span><span id="pie-der"></span></div></footer>
+
+<script id="datos" type="application/json">{"contenido": {"id": "revision-anclas", "titulo": "Revisión en sitio de anclas para columnas", "subtitulo": "Verificación topográfica de anclas coladas previa al montaje de la estructura metálica", "proyecto": "Park In Tlal — Bodega 18A", "frente": "Estructura metálica", "ubicacion": "S. Isidro 7, Industrial Tlaxcolpan, 54030 Tlalnepantla, Edo. de Méx.", "folio": "ARCA-B18A-RF-001", "revision": "Rev. 1 — incluye levantamiento topográfico", "fecha": "25 de noviembre de 2026", "fecha_visita": "23 de noviembre de 2026", "referencia": "CIM-04 Planta de placas base, rev. V004", "participantes": "ARCA (estructura metálica y topografía), equipo de ingeniería, obra civil y terracerías", "elementos": "3 dados con anclas coladas: A-1, poste de viento sobre eje 1 (entre A y B) y B-1", "pdf": "Revision_Sitio_Anclas_Columnas_Bodega18A.pdf", "levantamiento": "05-topografia/2026-11-25_levantamiento-anclas/levantamiento.json", "plano_topografico": "05-topografia/2026-11-25_levantamiento-anclas/LEVANTAMIENTO DE ANCLAS Y PLANO ALINEADO.dwg", "firma": {"nombre": "Ing. Noé Prudencio", "cargo": "Director General", "empresa": "GRUPO ARCA"}, "secciones": [{"id": "objetivo", "titulo": "Objetivo", "parrafos": ["Dejar constancia de la visita en sitio realizada por ARCA junto con los equipos de ingeniería, obra civil y terracerías, con apoyo de la brigada de topografía de ARCA. En ella se verificó la posición de las anclas coladas en los dados de cimentación antes del montaje de las columnas metálicas. Este reporte integra el levantamiento topográfico de las anclas y propone alternativas de solución para acordarlas con el contratista de obra civil y el proyectista estructural."]}, {"id": "trabajos", "titulo": "Trabajos realizados en sitio", "vinetas": ["Junto con el equipo de terracerías se revisaron los bancos de nivel y las referencias de proyecto. Con ellos, la brigada de topografía rectificó los ejes.", "Se alineó el plano estructural con los puntos de referencia de obra, sin modificar la geometría del proyecto, y se trazaron sobre él las anclas físicas.", "De cada ancla se levantó la corona (punta del ancla) y la base en el colado, para medir su desfase y su desplome.", "Se comentaron los hallazgos en sitio con el equipo de obra civil."]}, {"id": "observaciones", "titulo": "Observaciones", "parrafos": ["En la revisión se detectaron <b>3 dados<\/b> ya colados (A-1, poste de viento sobre eje 1 entre A y B, y B-1) con las siguientes condiciones:"], "vinetas": ["<b>Desfase de las anclas<\/b> respecto a la posición de proyecto: en promedio 49 mm, con un máximo de 77.5 mm. El corrimiento es bastante uniforme: unos 30 mm a lo largo del eje 1 hacia el eje B y de 28 a 42 mm hacia el exterior (alejándose del eje 2).", "<b>Anclas fuera de plomo<\/b>: el desplome máximo medido es de 14.7 mm, y 3 de las 35 anclas con base medida superan 10 mm.", "La posición de las anclas no es un corrimiento puro: entre anclas de un mismo dado hay diferencias de hasta 33 mm respecto al desfase promedio."], "parrafos2": ["Es posible que en distintas etapas de la obra se hayan usado referencias diferentes, por lo que se propone conciliar los ejes en conjunto antes de definir la solución."]}, {"id": "levantamiento", "titulo": "Levantamiento topográfico", "tipo": "levantamiento", "parrafos": ["La brigada de topografía alineó el plano estructural con los puntos de referencia de obra y levantó cada ancla física. De cada ancla se tiene la <b>posición de proyecto<\/b>, la <b>corona<\/b> (punta del ancla en campo) y la <b>base<\/b> (donde sale del concreto). La diferencia entre corona y base es el desplome del ancla. Los niveles de corona están referidos al piso de la nave existente (NPT = 0.000). <br/><b>Colores en este reporte:<\/b> verde = proyecto, rojo = ancla en obra (corona), azul = base del ancla, ámbar = placa y barrenos propuestos. En el plano del topógrafo los colores son otros: rojo = proyecto, amarillo = corona y blanco = base.", "Para validar la alineación con el modelo estructural se usaron los dados A-1 y B-1 como referencia. La distancia entre ellos es de 15.287 m en el levantamiento y 15.288 m en el proyecto. Con esa alineación, el centro del tercer dado cae a 3 mm de su posición en el modelo."], "nota": "Desfase medido en la corona del ancla, que es donde asienta la placa. Sentido +u: a lo largo del eje 1 hacia el eje B. Sentido +v: hacia el eje 2 (interior de la nave); un valor negativo indica desfase hacia el exterior. En el poste de viento no se levantó la base del ancla 8, por lo que no se reporta su desplome."}, {"id": "implicaciones", "titulo": "Implicaciones técnicas", "parrafos": ["En las placas de proyecto, los barrenos están a 50 mm del borde: 600 × 600 mm con barrenos Ø21 mm para PL-PB1-1, y 500 × 700 mm para PL-PB2-1. Con los desfases medidos, el centro de algunas anclas queda prácticamente en el borde de la placa: a 2 mm en A-1 y a 8 mm en B-1. En el poste de viento, una queda 2 mm fuera de la placa. Esto es menor que la distancia mínima al borde que pide la especificación (del orden de 25 mm para tornillos de 3/4\", AISC 360, Tabla J3.4). Por eso las placas de proyecto no pueden montarse sin adecuaciones.", "Como el desfase no es igual en todas las anclas, un solo corrimiento de barrenos no es suficiente: cada dado requiere su propia plantilla con las posiciones levantadas. Además, los niveles de corona varían entre −0.156 y −0.191 m, hasta 35 mm dentro de un mismo dado. Hay que verificar que la longitud libre de cada ancla permita colocar la placa, el grout de 50 mm, la arandela y las tuercas."]}, {"id": "alternativas", "titulo": "Alternativas de solución propuestas", "tipo": "alternativas", "alternativas": [{"titulo": "A. Adecuar la placa base", "etiqueta": "Propuesta preferente", "descripcion": "Fabricar para estos 3 dados placas ampliadas hacia el lado del desfase. Los barrenos irían en la posición real de cada ancla según el levantamiento, agrandados a Ø33 mm (1-5/16\") para absorber el desplome y las tolerancias, con placa-arandela de 1/4\" × 2\" (6 × 51 mm) soldada en campo (AISC, Manual de Construcción en Acero, Tabla 14-2, para anclas de 3/4\"). Con 50 mm al borde, igual que en proyecto, las medidas serían: A-1 de 635 × 650 mm, poste de viento de 555 × 745 mm y B-1 de 645 × 635 mm.", "consideraciones": "No requiere demoler y tiene menor impacto en el programa. Requiere el visto bueno del proyectista estructural para el tamaño de placa, el espesor, las soldaduras y las distancias al borde. También hay que confirmar que la placa ampliada quede dentro del dado de 800 × 800 mm, cuya cara no se levantó."}, {"titulo": "B. Corregir dados y anclas", "etiqueta": "", "descripcion": "Demoler los dados afectados y volver a colocar las anclas con plantilla, verificadas por topografía antes del colado. Después, volver a colar los dados.", "consideraciones": "Recupera la condición original del proyecto. Implica demolición, armado, cimbra, colado y curado, con impacto en tiempo y costo. Hay que cuidar no dañar la zapata ni la contratrabe."}], "parrafos": ["ARCA propone revisar primero la <b>alternativa A<\/b>, porque resuelve la situación sin demoliciones. Si el proyectista estructural no la valida, o si el desplome de alguna ancla no permite presentar la placa, se procedería con la <b>alternativa B<\/b> en los dados que lo requieran."]}, {"id": "pasos", "titulo": "Siguientes pasos sugeridos", "vinetas": ["Conciliar ejes y bancos de nivel entre topografía de ARCA, terracerías y obra civil.", "Enviar este levantamiento al proyectista estructural para validar la alternativa A (dimensiones de placa y tratamiento del desplome).", "Levantar la cara de los 3 dados y la base faltante del ancla 8 del poste de viento.", "Reunión de coordinación entre obra civil, ingeniería, terracerías y ARCA para acordar la solución y el programa.", "En los dados por colar, revisar en conjunto la posición de las anclas con plantilla y topografía antes de cada colado. ARCA puede compartir las plantillas 1:1 de las placas base."]}], "fotos": [{"archivo": "foto_1.jpg", "pie": "Brigada de topografía de ARCA rectificando ejes con estación total, respecto al banco de nivel de terracerías."}, {"archivo": "foto_2.jpg", "pie": "Revisión en sitio con el equipo de obra civil, con los planos estructurales."}, {"archivo": "foto_3.jpg", "pie": "Revisión de bancos de nivel con el equipo de terracerías."}, {"archivo": "foto_4.jpg", "pie": "Dado colado con 12 anclas (conexión PB-1). Se aprecian los ejes rectificados trazados sobre el dado."}, {"archivo": "foto_5.jpg", "pie": "Dado colado junto a la colindancia, con referencia topográfica marcada en la contratrabe."}, {"archivo": "foto_6.jpg", "pie": "Medición de la separación entre anclas contra la posición de proyecto."}, {"archivo": "foto_7.jpg", "pie": "Verificación de la posición y el plomo de las anclas en el dado de colindancia."}], "carpeta_fotos": "03-reportes/fotos/2026-11-23_visita-anclas", "recortes": [{"archivo": "CIM-04_PL-PB1-1.png", "pie": "Placa PL-PB1-1: 600 × 600 mm, e=3/4\", 12 barrenos Ø21 mm (CIM-04)"}, {"archivo": "CIM-04_conexion-PB-1_planta.png", "pie": "Conexión PB-1 / Planta: placa, cartabones y 12 anclas AN-1 (CIM-04)"}, {"archivo": "CIM-04_conexion-PB-1_corte.png", "pie": "Conexión PB-1 / Corte: dado D-5 de 800 mm, grout 50 mm (CIM-04)"}, {"archivo": "CIM-04_AN-1.png", "pie": "Ancla AN-1: 12 redondos OS 3/4\" con placas de succión (CIM-04)"}, {"archivo": "CIM-04_PL-PB2-1.png", "pie": "Placa PL-PB2-1: 500 × 700 mm, e=1/2\", 12 barrenos Ø21 mm (CIM-04)"}, {"archivo": "CIM-04_conexion-PB-2_planta.png", "pie": "Conexión PB-2 / Planta: poste de viento PV-1 (CIM-04)"}, {"archivo": "EST-12_PB-3_planta-y-PL-PB3-1.png", "pie": "Conexión PB-3 y placa PL-PB3-1: 200 × 120 mm, e=1/2\", 4 anclas OS 5/8\" (EST-12)", "ancho": "completo"}, {"archivo": "CIM-04_ubicacion-placas-base.png", "pie": "Ubicación de placas base, escala 1:100 (CIM-04). Cotas en cm.", "ancho": "completo"}], "carpeta_recortes": "03-reportes/recortes-planos", "descargas": [{"archivo": "LEVANTAMIENTO DE ANCLAS Y PLANO ALINEADO.dwg", "origen": "05-topografia/2026-11-25_levantamiento-anclas/LEVANTAMIENTO DE ANCLAS Y PLANO ALINEADO.dwg", "titulo": "Plano topográfico", "detalle": "Levantamiento de anclas y plano alineado (DWG, AutoCAD)"}, {"archivo": "Revision_Sitio_Anclas_Columnas_Bodega18A.pdf", "origen": "03-reportes/Revision_Sitio_Anclas_Columnas_Bodega18A.pdf", "titulo": "Reporte en PDF", "detalle": "Reporte completo membretado ARCA"}, {"archivo": "Placas_Base_Columnas_Bodega18A.pdf", "origen": "02-placas-base/Placas_Base_Columnas_Bodega18A.pdf", "titulo": "Placas base y plantillas 1:1", "detalle": "Medidas de proyecto de las placas base (PDF)"}], "cliente": "T-REINVENTA", "barreno_propuesto": {"diametro_mm": 33, "texto": "Ø33 mm (1-5/16\")", "arandela": "placa-arandela de 1/4\" × 2\" (6 × 51 mm)", "referencia": "AISC, Manual de Construcción en Acero, Tabla 14-2, para anclas de 3/4\""}, "resumen": {"recorrido": "El 23 de noviembre ARCA recorrió los dados ya colados con los equipos de ingeniería, obra civil y terracerías. La brigada de topografía rectificó los ejes con los bancos de nivel y levantó las 36 anclas de 3 dados: A-1, el poste de viento sobre el eje 1 y B-1.", "hallazgos": ["Las anclas están corridas en promedio <b>49 mm<\/b> (máximo <b>77.5 mm<\/b>): unos 30 mm hacia el eje B y de 28 a 42 mm hacia el exterior.", "Algunas anclas están fuera de plomo: el desplome máximo es de <b>14.7 mm<\/b>.", "Con la placa de proyecto, varias anclas quedan en el borde de la placa o fuera de ella, así que no se puede montar tal cual."], "propuesta": "<b>Alternativa A (preferente):<\/b> placas ampliadas hacia el lado del desfase, con barrenos agrandados de Ø33 mm en la posición real de cada ancla y placa-arandela soldada en campo. Medidas: A-1 de 635 × 650 mm, poste de viento de 555 × 745 mm y B-1 de 645 × 635 mm. Requiere la validación del proyectista estructural. <b>Alternativa B:<\/b> demoler y volver a colar los dados.", "fotos": ["foto_4.jpg", "foto_5.jpg"]}, "url_web": "https://arqjorgeml1204.github.io/reportes-bodega18-tlal/revision-anclas/"}, "levantamiento": {"fuente": "LEVANTAMIENTO DE ANCLAS Y PLANO ALINEADO.dwg", "notas_topografo": ["Resumen de visita topografica", "Los puntos en amarillo son la corona de la ancla fisica en campo", "Los puntos en blanco es la ubicacion de la base de ancla en el colado asi se puede apreciar el desplome de la ancla", "la nomenclatura en verde es el nivel en que se encuentra la corona  tomando en cuenta el nivel cero del piso que se encuentra en la nave existente", "El plano ya se encuentra alineado en base a los puntos que nos entrago el ing. Raul Blas. No se modifica nada de la estructura solo se traza con lo fisico en campo.", "Los bloques que se encuentran en color rojo es la posicion real de las anclas conforme a  proyecto. Ahi nos damos cuenta del desface de las que se encuentran fisicamente."], "convenciones": {"u": "hacia eje B", "v": "hacia eje 2", "unidades": "mm", "nivel": "m respecto a NPT nave existente = 0.000", "borde_min_propuesto": 50, "tol_desplome": 10}, "ajuste": {"dist_A1_B1_levantamiento_m": 15.287, "dist_A1_B1_modelo_m": 15.288, "error_PB2_mm": 3.1}, "resumen": {"dados": 3, "anclas": 36, "medidas": 36, "sin_base": 1, "prom_desfase": 49.3, "max_desfase": 77.5, "max_desplome": 14.7, "desplome_revisar": 3}, "dados": [{"id": "A-1", "tipo": "PB-1", "placa": "PL-PB1-1", "elemento": "Columna CM-1", "placa_proyecto_mm": [600, 600], "centro_modelo": [-17377.4, 204.3], "centro_utm": [479327.41, 2162305.588], "centro_levantado_modelo": [-17377.4, 204.3], "n_anclas": 12, "n_medidas": 12, "n_con_base": 12, "prom_cor_du": 28.0, "prom_cor_dv": -41.8, "prom_cor_d": 51.2, "prom_base_du": 29.1, "prom_base_dv": -37.7, "max_cor_d": 77.5, "max_base_d": 68.1, "max_desplome": 14.7, "prom_desplome": 5.0, "n_desplome_revisar": 2, "dispersion_max": 31.9, "nivel_corona_min": -0.191, "nivel_corona_max": -0.156, "borde_min_placa_proyecto": 2.1, "placa_propuesta": {"u0": -300, "u1": 335, "v0": -350, "v1": 300, "largo_u": 635, "ancho_v": 650, "ext": {"u_neg": 0.0, "u_pos": 35.0, "v_neg": 50.0, "v_pos": 0.0}}, "anclas": [{"proy_u": -250, "proy_v": -250, "cor_du": 31.7, "cor_dv": -41.1, "cor_d": 51.9, "nivel_corona": -0.162, "corona_modelo": [-17668.5, 422.4], "base_du": 32.0, "base_dv": -43.5, "base_d": 54.0, "base_modelo": [-17670.8, 422.1], "desplome": 2.3, "desp_du": -0.3, "desp_dv": 2.3, "proy_modelo": [-17627.4, 454.1], "n": 1}, {"proy_u": -250, "proy_v": -83, "cor_du": 24.5, "cor_dv": -73.5, "cor_d": 77.5, "nivel_corona": -0.157, "corona_modelo": [-17533.9, 429.4], "base_du": 31.4, "base_dv": -60.5, "base_d": 68.1, "base_modelo": [-17520.8, 422.5], "desplome": 14.7, "desp_du": -6.9, "desp_dv": -13.1, "proy_modelo": [-17460.4, 453.9], "n": 2}, {"proy_u": -249, "proy_v": 84, "cor_du": 29.0, "cor_dv": -27.5, "cor_d": 40.0, "nivel_corona": -0.158, "corona_modelo": [-17320.8, 424.6], "base_du": 30.6, "base_dv": -27.1, "base_d": 40.9, "base_modelo": [-17320.5, 423.1], "desplome": 1.6, "desp_du": -1.6, "desp_dv": -0.3, "proy_modelo": [-17293.4, 453.7], "n": 3}, {"proy_u": -250, "proy_v": 250, "cor_du": 31.6, "cor_dv": -47.6, "cor_d": 57.2, "nivel_corona": -0.156, "corona_modelo": [-17174.9, 422.6], "base_du": 30.6, "base_dv": -43.2, "base_d": 53.0, "base_modelo": [-17170.5, 423.5], "desplome": 4.5, "desp_du": 0.9, "desp_dv": -4.4, "proy_modelo": [-17127.3, 454.1], "n": 4}, {"proy_u": -100, "proy_v": -250, "cor_du": 28.5, "cor_dv": -47.9, "cor_d": 55.7, "nivel_corona": -0.167, "corona_modelo": [-17675.4, 275.6], "base_du": 28.0, "base_dv": -42.1, "base_d": 50.6, "base_modelo": [-17669.6, 276.1], "desplome": 5.8, "desp_du": 0.5, "desp_dv": -5.8, "proy_modelo": [-17627.5, 304.1], "n": 5}, {"proy_u": -100, "proy_v": 250, "cor_du": 25.7, "cor_dv": -40.1, "cor_d": 47.6, "nivel_corona": -0.171, "corona_modelo": [-17167.6, 278.4], "base_du": 29.5, "base_dv": -37.7, "base_d": 47.9, "base_modelo": [-17165.2, 274.6], "desplome": 4.5, "desp_du": -3.8, "desp_dv": -2.4, "proy_modelo": [-17127.5, 304.1], "n": 6}, {"proy_u": 100, "proy_v": -250, "cor_du": 33.9, "cor_dv": -41.7, "cor_d": 53.7, "nivel_corona": -0.176, "corona_modelo": [-17669.1, 70.2], "base_du": 32.0, "base_dv": -40.6, "base_d": 51.7, "base_modelo": [-17667.9, 72.1], "desplome": 2.2, "desp_du": 1.9, "desp_dv": -1.1, "proy_modelo": [-17627.3, 104.1], "n": 7}, {"proy_u": 100, "proy_v": 250, "cor_du": 25.4, "cor_dv": -31.0, "cor_d": 40.1, "nivel_corona": -0.181, "corona_modelo": [-17158.2, 78.7], "base_du": 25.4, "base_dv": -31.0, "base_d": 40.1, "base_modelo": [-17158.2, 78.7], "desplome": 0.0, "desp_du": -0.0, "desp_dv": 0.0, "proy_modelo": [-17127.3, 104.1], "n": 8}, {"proy_u": 249, "proy_v": -251, "cor_du": 31.7, "cor_dv": -43.5, "cor_d": 53.8, "nivel_corona": -0.178, "corona_modelo": [-17671.4, -76.8], "base_du": 30.8, "base_dv": -38.7, "base_d": 49.5, "base_modelo": [-17666.7, -75.9], "desplome": 4.8, "desp_du": 0.9, "desp_dv": -4.8, "proy_modelo": [-17628.0, -45.0], "n": 9}, {"proy_u": 250, "proy_v": -84, "cor_du": 22.3, "cor_dv": -58.7, "cor_d": 62.8, "nivel_corona": -0.182, "corona_modelo": [-17519.6, -67.6], "base_du": 24.9, "base_dv": -46.5, "base_d": 52.7, "base_modelo": [-17507.4, -70.1], "desplome": 12.5, "desp_du": -2.6, "desp_dv": -12.2, "proy_modelo": [-17461.0, -45.2], "n": 10}, {"proy_u": 250, "proy_v": 83, "cor_du": 27.9, "cor_dv": -12.7, "cor_d": 30.7, "nivel_corona": -0.191, "corona_modelo": [-17306.7, -73.3], "base_du": 27.9, "base_dv": -12.7, "base_d": 30.7, "base_modelo": [-17306.7, -73.3], "desplome": 0.0, "desp_du": -0.0, "desp_dv": 0.0, "proy_modelo": [-17294.0, -45.4], "n": 11}, {"proy_u": 249, "proy_v": 249, "cor_du": 23.9, "cor_dv": -35.8, "cor_d": 43.0, "nivel_corona": -0.186, "corona_modelo": [-17163.7, -68.8], "base_du": 26.3, "base_dv": -28.9, "base_d": 39.0, "base_modelo": [-17156.8, -71.3], "desplome": 7.3, "desp_du": -2.4, "desp_dv": -6.9, "proy_modelo": [-17127.9, -45.0], "n": 12}], "error_alineacion_mm": 0.0}, {"id": "1-AB", "tipo": "PB-2", "placa": "PL-PB2-1", "elemento": "Poste de viento PV-1 (eje 1, entre A y B, a 4.68 m de A)", "placa_proyecto_mm": [500, 700], "centro_modelo": [-17405.35, -4475.7], "centro_utm": [479326.519, 2162300.996], "centro_levantado_modelo": [-17404.4, -4472.7], "n_anclas": 12, "n_medidas": 12, "n_con_base": 11, "prom_cor_du": 34.4, "prom_cor_dv": -41.0, "prom_cor_d": 53.9, "prom_base_du": 34.2, "prom_base_dv": -39.1, "max_cor_d": 73.5, "max_base_d": 67.8, "max_desplome": 10.4, "prom_desplome": 3.4, "n_desplome_revisar": 1, "dispersion_max": 20.7, "nivel_corona_min": -0.178, "nivel_corona_max": -0.165, "borde_min_placa_proyecto": -1.9, "placa_propuesta": {"u0": -250, "u1": 305, "v0": -395, "v1": 350, "largo_u": 555, "ancho_v": 745, "ext": {"u_neg": 0.0, "u_pos": 55.0, "v_neg": 45.0, "v_pos": 0.0}}, "anclas": [{"proy_u": -200, "proy_v": -300, "cor_du": 21.5, "cor_dv": -36.8, "cor_d": 42.6, "nivel_corona": -0.17, "corona_modelo": [-17741.2, -4294.2], "base_du": 21.8, "base_dv": -34.2, "base_d": 40.6, "base_modelo": [-17738.6, -4294.5], "desplome": 2.6, "desp_du": -0.2, "desp_dv": -2.6, "proy_modelo": [-17704.4, -4272.7], "n": 1}, {"proy_u": -200, "proy_v": -100, "cor_du": 29.6, "cor_dv": -36.4, "cor_d": 46.9, "nivel_corona": -0.17, "corona_modelo": [-17540.8, -4302.3], "base_du": 30.0, "base_dv": -35.4, "base_d": 46.4, "base_modelo": [-17539.8, -4302.7], "desplome": 1.1, "desp_du": -0.4, "desp_dv": -1.0, "proy_modelo": [-17504.4, -4272.7], "n": 2}, {"proy_u": -200, "proy_v": 100, "cor_du": 38.9, "cor_dv": -31.5, "cor_d": 50.1, "nivel_corona": -0.174, "corona_modelo": [-17335.9, -4311.7], "base_du": 39.3, "base_dv": -32.4, "base_d": 51.0, "base_modelo": [-17336.8, -4312.1], "desplome": 1.0, "desp_du": -0.4, "desp_dv": 0.9, "proy_modelo": [-17304.4, -4272.7], "n": 3}, {"proy_u": -200, "proy_v": 300, "cor_du": 37.1, "cor_dv": -32.4, "cor_d": 49.3, "nivel_corona": -0.167, "corona_modelo": [-17136.8, -4309.9], "base_du": 37.1, "base_dv": -32.4, "base_d": 49.3, "base_modelo": [-17136.8, -4309.9], "desplome": 0.0, "desp_du": -0.0, "desp_dv": 0.0, "proy_modelo": [-17104.4, -4272.7], "n": 4}, {"proy_u": -83, "proy_v": -300, "cor_du": 17.5, "cor_dv": -31.8, "cor_d": 36.4, "nivel_corona": -0.175, "corona_modelo": [-17736.2, -4407.3], "base_du": 24.4, "base_dv": -32.3, "base_d": 40.5, "base_modelo": [-17736.7, -4414.2], "desplome": 6.9, "desp_du": -6.9, "desp_dv": 0.5, "proy_modelo": [-17704.4, -4389.7], "n": 5}, {"proy_u": -83, "proy_v": 300, "cor_du": 35.1, "cor_dv": -37.7, "cor_d": 51.5, "nivel_corona": -0.17, "corona_modelo": [-17142.1, -4424.8], "base_du": 35.1, "base_dv": -37.7, "base_d": 51.5, "base_modelo": [-17142.1, -4424.8], "desplome": 0.0, "desp_du": -0.0, "desp_dv": 0.0, "proy_modelo": [-17104.4, -4389.7], "n": 6}, {"proy_u": 83, "proy_v": -300, "cor_du": 25.6, "cor_dv": -37.6, "cor_d": 45.5, "nivel_corona": -0.174, "corona_modelo": [-17742.0, -4581.3], "base_du": 30.5, "base_dv": -37.9, "base_d": 48.6, "base_modelo": [-17742.3, -4586.2], "desplome": 4.9, "desp_du": -4.9, "desp_dv": 0.3, "proy_modelo": [-17704.4, -4555.7], "n": 7}, {"proy_u": 83, "proy_v": 300, "cor_du": 47.1, "cor_dv": -48.1, "cor_d": 67.3, "nivel_corona": -0.165, "corona_modelo": [-17152.5, -4602.8], "proy_modelo": [-17104.4, -4555.7], "n": 8}, {"proy_u": 200, "proy_v": -300, "cor_du": 35.1, "cor_dv": -44.8, "cor_d": 57.0, "nivel_corona": -0.174, "corona_modelo": [-17749.2, -4707.8], "base_du": 30.9, "base_dv": -46.7, "base_d": 56.0, "base_modelo": [-17751.1, -4703.6], "desplome": 4.6, "desp_du": 4.2, "desp_dv": 1.9, "proy_modelo": [-17704.4, -4672.7], "n": 9}, {"proy_u": 200, "proy_v": -100, "cor_du": 35.5, "cor_dv": -46.8, "cor_d": 58.7, "nivel_corona": -0.178, "corona_modelo": [-17551.2, -4708.3], "base_du": 35.5, "base_dv": -46.8, "base_d": 58.7, "base_modelo": [-17551.2, -4708.3], "desplome": 0.0, "desp_du": -0.0, "desp_dv": 0.0, "proy_modelo": [-17504.4, -4672.7], "n": 10}, {"proy_u": 200, "proy_v": 100, "cor_du": 38.4, "cor_dv": -56.5, "cor_d": 68.4, "nivel_corona": -0.174, "corona_modelo": [-17360.9, -4711.2], "base_du": 42.2, "base_dv": -46.9, "base_d": 63.1, "base_modelo": [-17351.3, -4714.9], "desplome": 10.4, "desp_du": -3.8, "desp_dv": -9.7, "proy_modelo": [-17304.4, -4672.7], "n": 11}, {"proy_u": 200, "proy_v": 300, "cor_du": 51.9, "cor_dv": -52.0, "cor_d": 73.5, "nivel_corona": -0.172, "corona_modelo": [-17156.4, -4724.6], "base_du": 48.9, "base_dv": -47.0, "base_d": 67.8, "base_modelo": [-17151.4, -4721.6], "desplome": 5.9, "desp_du": 3.0, "desp_dv": -5.1, "proy_modelo": [-17104.4, -4672.7], "n": 12}], "error_alineacion_mm": 3.1}, {"id": "B-1", "tipo": "PB-1", "placa": "PL-PB1-1", "elemento": "Columna CM-1", "placa_proyecto_mm": [600, 600], "centro_modelo": [-17377.4, -15083.7], "centro_utm": [479324.585, 2162290.564], "centro_levantado_modelo": [-17377.4, -15083.0], "n_anclas": 12, "n_medidas": 12, "n_con_base": 12, "prom_cor_du": 30.0, "prom_cor_dv": -27.8, "prom_cor_d": 42.9, "prom_base_du": 30.4, "prom_base_dv": -28.1, "max_cor_d": 60.3, "max_base_d": 58.5, "max_desplome": 8.2, "prom_desplome": 4.5, "n_desplome_revisar": 0, "dispersion_max": 32.9, "nivel_corona_min": -0.179, "nivel_corona_max": -0.171, "borde_min_placa_proyecto": 7.9, "placa_propuesta": {"u0": -300, "u1": 345, "v0": -335, "v1": 300, "largo_u": 645, "ancho_v": 635, "ext": {"u_neg": 0.0, "u_pos": 45.0, "v_neg": 35.0, "v_pos": 0.0}}, "anclas": [{"proy_u": -250, "proy_v": -250, "cor_du": 27.5, "cor_dv": -25.0, "cor_d": 37.1, "nivel_corona": -0.174, "corona_modelo": [-17652.3, -14860.7], "base_du": 23.7, "base_dv": -23.7, "base_d": 33.5, "base_modelo": [-17651.0, -14856.9], "desplome": 4.0, "desp_du": 3.8, "desp_dv": -1.3, "proy_modelo": [-17627.4, -14833.2], "n": 1}, {"proy_u": -250, "proy_v": -83, "cor_du": 31.4, "cor_dv": -51.5, "cor_d": 60.3, "nivel_corona": -0.171, "corona_modelo": [-17511.9, -14864.8], "base_du": 30.6, "base_dv": -45.7, "base_d": 55.0, "base_modelo": [-17506.1, -14864.1], "desplome": 5.8, "desp_du": 0.7, "desp_dv": -5.8, "proy_modelo": [-17460.4, -14833.4], "n": 2}, {"proy_u": -249, "proy_v": 84, "cor_du": 27.8, "cor_dv": 5.0, "cor_d": 28.3, "nivel_corona": -0.172, "corona_modelo": [-17288.3, -14861.5], "base_du": 30.2, "base_dv": -2.7, "base_d": 30.3, "base_modelo": [-17296.1, -14863.9], "desplome": 8.1, "desp_du": -2.4, "desp_dv": 7.7, "proy_modelo": [-17293.4, -14833.6], "n": 3}, {"proy_u": -250, "proy_v": 250, "cor_du": 32.0, "cor_dv": -23.8, "cor_d": 39.9, "nivel_corona": -0.172, "corona_modelo": [-17151.1, -14865.2], "base_du": 32.0, "base_dv": -23.8, "base_d": 39.9, "base_modelo": [-17151.1, -14865.2], "desplome": 0.0, "desp_du": -0.0, "desp_dv": 0.0, "proy_modelo": [-17127.3, -14833.2], "n": 4}, {"proy_u": -100, "proy_v": -250, "cor_du": 20.6, "cor_dv": -28.3, "cor_d": 35.0, "nivel_corona": -0.172, "corona_modelo": [-17655.9, -15003.8], "base_du": 23.6, "base_dv": -28.9, "base_d": 37.3, "base_modelo": [-17656.5, -15006.8], "desplome": 3.1, "desp_du": -3.0, "desp_dv": 0.6, "proy_modelo": [-17627.5, -14983.2], "n": 5}, {"proy_u": -100, "proy_v": 250, "cor_du": 35.6, "cor_dv": -18.1, "cor_d": 40.0, "nivel_corona": -0.173, "corona_modelo": [-17145.6, -15018.8], "base_du": 33.9, "base_dv": -18.2, "base_d": 38.5, "base_modelo": [-17145.7, -15017.1], "desplome": 1.7, "desp_du": 1.7, "desp_dv": 0.1, "proy_modelo": [-17127.5, -14983.2], "n": 6}, {"proy_u": 100, "proy_v": -250, "cor_du": 18.6, "cor_dv": -31.7, "cor_d": 36.7, "nivel_corona": -0.173, "corona_modelo": [-17659.0, -15201.8], "base_du": 23.6, "base_dv": -31.7, "base_d": 39.6, "base_modelo": [-17659.1, -15206.8], "desplome": 5.0, "desp_du": -5.0, "desp_dv": 0.0, "proy_modelo": [-17627.3, -15183.2], "n": 7}, {"proy_u": 100, "proy_v": 250, "cor_du": 44.2, "cor_dv": -23.7, "cor_d": 50.2, "nivel_corona": -0.175, "corona_modelo": [-17151.0, -15227.4], "base_du": 37.0, "base_dv": -23.5, "base_d": 43.8, "base_modelo": [-17150.7, -15220.2], "desplome": 7.2, "desp_du": 7.2, "desp_dv": -0.2, "proy_modelo": [-17127.3, -15183.2], "n": 8}, {"proy_u": 249, "proy_v": -251, "cor_du": 20.5, "cor_dv": -33.6, "cor_d": 39.4, "nivel_corona": -0.171, "corona_modelo": [-17661.6, -15352.9], "base_du": 25.8, "base_dv": -36.5, "base_d": 44.7, "base_modelo": [-17664.5, -15358.1], "desplome": 6.0, "desp_du": -5.2, "desp_dv": 2.9, "proy_modelo": [-17628.0, -15332.3], "n": 9}, {"proy_u": 250, "proy_v": -84, "cor_du": 31.6, "cor_dv": -49.2, "cor_d": 58.5, "nivel_corona": -0.179, "corona_modelo": [-17510.2, -15364.1], "base_du": 31.6, "base_dv": -49.2, "base_d": 58.5, "base_modelo": [-17510.2, -15364.1], "desplome": 0.0, "desp_du": -0.0, "desp_dv": 0.0, "proy_modelo": [-17461.0, -15332.6], "n": 10}, {"proy_u": 250, "proy_v": 83, "cor_du": 27.6, "cor_dv": -22.9, "cor_d": 35.8, "nivel_corona": -0.173, "corona_modelo": [-17316.9, -15360.3], "base_du": 35.6, "base_dv": -21.3, "base_d": 41.5, "base_modelo": [-17315.2, -15368.4], "desplome": 8.2, "desp_du": -8.0, "desp_dv": -1.6, "proy_modelo": [-17294.0, -15332.8], "n": 11}, {"proy_u": 249, "proy_v": 249, "cor_du": 43.1, "cor_dv": -30.8, "cor_d": 53.0, "nivel_corona": -0.177, "corona_modelo": [-17158.8, -15375.4], "base_du": 37.8, "base_dv": -32.3, "base_d": 49.7, "base_modelo": [-17160.2, -15370.1], "desplome": 5.5, "desp_du": 5.3, "desp_dv": 1.5, "proy_modelo": [-17127.9, -15332.3], "n": 12}], "error_alineacion_mm": 0.7}]}}</script>
+<script>
+const D = JSON.parse(document.getElementById('datos').textContent);
+const C = D.contenido, L = D.levantamiento;
+const $ = (s, el=document) => el.querySelector(s);
+const h = (tag, attrs={}, html='') => { const e=document.createElement(tag); for (const [k,v] of Object.entries(attrs)) e.setAttribute(k,v); if (html) e.innerHTML=html; return e; };
+const f1 = x => (x==null?'—':(Math.round(x*10)/10).toLocaleString('es-MX',{minimumFractionDigits:1,maximumFractionDigits:1}));
+const f0 = x => (x==null?'—':Math.round(x).toLocaleString('es-MX'));
+const ICO_DL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16"/></svg>';
+const nombreDado = d => d.id==='1-AB' ? 'Poste eje 1 (A–B)' : 'Dado '+d.id;
+const BAR = (C.barreno_propuesto||{}).diametro_mm || 33;
+const lightbox = (src, pie) => { const lb=$('#lb'); $('img',lb).src=src; $('p',lb).textContent=pie; lb.classList.add('on'); };
+$('#lb').onclick = e => { if (e.target.tagName!=='IMG') $('#lb').classList.remove('on'); };
+document.addEventListener('keydown', e => { if (e.key==='Escape') $('#lb').classList.remove('on'); });
+
+// --- membrete ---
+document.title = `${C.titulo} — ${C.proyecto} | GRUPO ARCA`;
+$('#h-titulo').textContent = C.titulo;
+$('#h-meta').textContent = `${C.proyecto}${C.cliente?' · '+C.cliente:''} · Folio ${C.folio} · ${C.fecha}`;
+
+// --- resumen junto al 3D ---
+{ const r = $('#resumen'), R = C.resumen||{}, K = L.resumen, dl = C.descargas||[];
+  const pdf = dl.find(x=>x.archivo.endsWith('.pdf')), dwg = dl.find(x=>x.archivo.endsWith('.dwg'));
+  r.innerHTML = `<div class="proy">${C.proyecto}${C.cliente?' · '+C.cliente:''}</div>
+   <h1>${C.titulo}</h1>
+   <div style="font-size:12.5px;color:var(--gris)">${C.folio} · ${C.revision} · ${C.fecha}</div>
+   <div class="mini"><div class="r"><b>${f1(K.prom_desfase)}</b>mm desfase prom.</div><div class="r"><b>${f1(K.max_desfase)}</b>mm desfase máx.</div><div><b>${f1(K.max_desplome)}</b>mm desplome máx.</div><div><b>${K.dados} / ${K.anclas}</b>dados / anclas</div></div>
+   <div><h3>Qué se hizo</h3><p>${R.recorrido||''}</p></div>
+   <div><h3>Hallazgos</h3><ul>${(R.hallazgos||[]).map(x=>`<li>${x}</li>`).join('')}</ul></div>
+   <div><h3>Propuesta</h3><p>${R.propuesta||''}</p></div>
+   <div class="fotos2">${(R.fotos||[]).map(a=>{ const f=C.fotos.find(x=>x.archivo===a)||{pie:''}; return `<figure data-src="img/fotos/${a}" data-pie="${f.pie.replace(/"/g,'&quot;')}"><img src="img/fotos/${a}" alt=""><figcaption>${f.pie}</figcaption></figure>`; }).join('')}</div>
+   <div class="btns">${pdf?`<a class="btn primario" href="descargas/${encodeURIComponent(pdf.archivo)}" download>${ICO_DL}Reporte PDF</a>`:''}${dwg?`<a class="btn" href="descargas/${encodeURIComponent(dwg.archivo)}" download>${ICO_DL}Plano topográfico</a>`:''}</div>`;
+  r.querySelectorAll('figure').forEach(f => f.onclick = () => lightbox(f.dataset.src, f.dataset.pie));
+}
+
+// --- levantamiento (sección abierta) ---
+const SIMB = {
+  hp:['i-hp','PROYECTO: posición del ancla según CIM-04 (barreno Ø21)'],
+  pp:['i-pplaca','PROYECTO: placa base de proyecto'],
+  ho:['i-ho','EN OBRA: punta (corona) del ancla, medida por topografía'],
+  hb:['i-base','EN OBRA: base del ancla al salir del concreto'],
+  de:['i-des','Desfase: de la posición de proyecto a la corona en obra'],
+  dp:['i-dpl','Desplome: inclinación del ancla (de la base a la corona)'],
+  pr:['i-prop','PROPUESTA: placa ampliada (alternativa A)'],
+  bh:['i-hb',`PROPUESTA: barreno agrandado Ø${BAR} en la posición real`],
+};
+const simb = keys => `<div class="simb lista">${keys.map(k=>`<span><i class="${SIMB[k][0]}"></i>${SIMB[k][1]}</span>`).join('')}</div>`;
+
+
+// --- fichas desplegables y secciones ---
+const main = $('#main'); const toc = $('#toc'); let n = 0;
+const tocLink = (id, t) => toc.append(h('a',{href:'#'+id},t));
+const fichas = h('div',{class:'fichas',id:'fichas'}); main.append(fichas); tocLink('fichas','Reporte');
+{ const d = h('details',{class:'ficha ancha'});
+  d.innerHTML = `<summary><span class="n">—</span>Datos del reporte<span class="res">${C.proyecto} · ${C.ubicacion}</span></summary><div class="cuerpo"><div class="datos">${
+   [['Proyecto',C.proyecto+(C.cliente?' · '+C.cliente:'')],['Ubicación',C.ubicacion],['Folio',`${C.folio} · ${C.revision}`],['Fecha de emisión',C.fecha],['Fecha de visita',C.fecha_visita],['Referencia',C.referencia],['Participantes',C.participantes],['Elementos',C.elementos]]
+   .map(([k,v])=>`<div><span>${k}</span>${v}</div>`).join('')}</div></div>`;
+  fichas.append(d); }
+const plano = t => t.replace(/<[^>]+>/g,'');
+for (const S of C.secciones){
+  n++;
+  if (S.tipo === 'levantamiento'){ levantamiento(S, n); continue; }
+  const d = h('details',{class:'ficha'+(S.tipo==='alternativas'||S.id==='implicaciones'?' ancha':''), id:S.id});
+  if (S.tipo==='alternativas') d.setAttribute('open','');
+  const primera = plano((S.parrafos||S.vinetas||[''])[0]);
+  let cuerpo = (S.tipo!=='alternativas' ? (S.parrafos||[]).map(p=>`<p>${p}</p>`).join('') : '')
+    + (S.vinetas ? `<ul>${S.vinetas.map(v=>`<li>${v}</li>`).join('')}</ul>` : '')
+    + (S.parrafos2||[]).map(p=>`<p style="margin-top:8px">${p}</p>`).join('');
+  if (S.tipo==='alternativas') cuerpo += alternativas(S);
+  d.innerHTML = `<summary><span class="n">${String(n).padStart(2,'0')}</span>${S.titulo}<span class="res">${primera}</span></summary><div class="cuerpo">${cuerpo}</div>`;
+  (S.id==='implicaciones'||S.tipo==='alternativas'||S.id==='pasos' ? main : fichas).append(d);
+  if (S.id==='implicaciones'||S.tipo==='alternativas'||S.id==='pasos'){ d.style.marginTop='10px'; }
+}
+
+function alternativas(S){
+  return `<div class="alts">${S.alternativas.map((a,i)=>`<div class="alt${i===0?' pref':''}">${a.etiqueta?`<span class="tag">${a.etiqueta}</span>`:''}<h4>${a.titulo}</h4><dl><dt>Descripción</dt><dd>${a.descripcion}</dd><dt>Consideraciones</dt><dd>${a.consideraciones}</dd></dl></div>`).join('')}</div>
+  <h3 style="font:700 15px Barlow;margin:16px 0 8px">Placas ampliadas propuestas (preliminar, sujeto a validación)</h3>
+  <div class="scroll"><table class="tabla"><thead><tr><th>Dado</th><th>Placa</th><th class="num">Proyecto (mm)</th><th class="num">Propuesta (mm)</th><th class="num">Barrenos</th><th class="num">Crece hacia eje B</th><th class="num">Crece hacia exterior</th><th class="num">Ancla más cercana al borde (proyecto)</th></tr></thead><tbody>
+  ${L.dados.map(d=>`<tr><td><b>${nombreDado(d)}</b></td><td>${d.placa}</td><td class="num">${d.placa_proyecto_mm[0]} × ${d.placa_proyecto_mm[1]}</td><td class="num"><b>${d.placa_propuesta.largo_u} × ${d.placa_propuesta.ancho_v}</b></td><td class="num">12 × Ø${BAR}</td><td class="num">+${f0(d.placa_propuesta.ext.u_pos)} mm</td><td class="num">+${f0(d.placa_propuesta.ext.v_neg)} mm</td><td class="num">${f1(d.borde_min_placa_proyecto)} mm ${d.borde_min_placa_proyecto<0?'<span class="chip r">fuera</span>':'<span class="chip a">en borde</span>'}</td></tr>`).join('')}
+  </tbody></table></div><div class="nota">Medidas en el sentido del eje 1 (A→B) × perpendicular (hacia eje 2). Envolvente de las coronas levantadas con 50 mm al borde, redondeada a 5 mm. El tamaño final, el espesor y las soldaduras los define el proyectista estructural.</div>
+  ${(S.parrafos||[]).map(p=>`<p style="margin-top:10px">${p}</p>`).join('')}`;
+}
+
+function levantamiento(S, num){
+  const s = h('section',{id:S.id}); main.append(s); tocLink(S.id, S.titulo);
+  s.append(h('h2',{},`<span class="n">${String(num).padStart(2,'0')}</span>${S.titulo}`));
+  const c = h('div',{class:'card'}); (S.parrafos||[]).forEach(p=>c.append(h('p',{},p)));
+  c.append(h('p',{style:'font-size:13px;color:var(--gris)'},`Verificación de la alineación con el modelo del proyecto: ${L.dados.map(d=>`${nombreDado(d)} ${f1(d.error_alineacion_mm)} mm`).join(' · ')}.`));
+  s.append(c);
+  const r = h('div',{class:'card',style:'margin-top:14px'});
+  r.innerHTML = `<h3 style="margin-top:0">Resumen por dado</h3><div class="scroll"><table class="tabla"><thead><tr><th>Dado</th><th>Elemento</th><th class="num">Anclas</th><th class="num">Desfase prom. u</th><th class="num">Desfase prom. v</th><th class="num">Desfase prom.</th><th class="num">Desfase máx.</th><th class="num">Desplome máx.</th><th class="num">Nivel corona (m)</th></tr></thead><tbody>
+  ${L.dados.map(d=>`<tr><td><b>${nombreDado(d)}</b></td><td>${d.placa} · ${d.elemento.split(' (')[0]}</td><td class="num">${d.n_anclas}</td><td class="num">${f1(d.prom_cor_du)}</td><td class="num">${f1(d.prom_cor_dv)}</td><td class="num"><b>${f1(d.prom_cor_d)}</b></td><td class="num"><span class="chip r">${f1(d.max_cor_d)}</span></td><td class="num"><span class="chip ${d.max_desplome>L.convenciones.tol_desplome?'a':'v'}">${f1(d.max_desplome)}</span></td><td class="num">${d.nivel_corona_min.toFixed(3)} a ${d.nivel_corona_max.toFixed(3)}</td></tr>`).join('')}
+  </tbody></table></div><div class="nota">${S.nota}</div>`;
+  s.append(r);
+  s.append(h('h3',{},'Ubicación de los dados revisados'));
+  const u = h('div',{class:'plan-box'}); u.innerHTML = planoUbicacion(); s.append(u);
+  s.append(h('h3',{},'Detalle por dado'));
+  const tabs = h('div',{class:'dados-tabs'}); s.append(tabs);
+  const cont = h('div'); s.append(cont);
+  let k = 3;
+  const mostrar = i => { [...tabs.children].forEach((b,j)=>b.classList.toggle('on',i===j)); cont.innerHTML=''; cont.append(detalleDado(L.dados[i], k, v=>{k=v; mostrar(i);})); };
+  L.dados.forEach((d,i) => { const b=h('button',{},nombreDado(d)); b.onclick=()=>mostrar(i); tabs.append(b); });
+  mostrar(0);
+}
+
+function planoUbicacion(){
+  const X={1:0,2:1990,3:3740}, Y={A:0,B:1529,C:3124,D:4743};
+  const W=3740,H=4743, m=420, sx=x=>x+m, sy=y=>y+m;
+  let g=`<svg viewBox="0 0 ${W+2*m} ${H+2*m}" style="max-height:520px" font-family="Inter" role="img" aria-label="Planta de ubicación de los dados revisados">`;
+  for(const [k,x] of Object.entries(X)) g+=`<line x1="${sx(x)}" y1="${sy(-200)}" x2="${sx(x)}" y2="${sy(H+200)}" stroke="#bbb" stroke-width="8" stroke-dasharray="60 30 10 30"/><circle cx="${sx(x)}" cy="${sy(-300)}" r="110" fill="#fff" stroke="#211915" stroke-width="10"/><text x="${sx(x)}" y="${sy(-300)+45}" font-size="130" text-anchor="middle" font-weight="600">${k}</text>`;
+  for(const [k,y] of Object.entries(Y)) g+=`<line x1="${sx(-200)}" y1="${sy(y)}" x2="${sx(W+200)}" y2="${sy(y)}" stroke="#bbb" stroke-width="8" stroke-dasharray="60 30 10 30"/><circle cx="${sx(-300)}" cy="${sy(y)}" r="110" fill="#fff" stroke="#211915" stroke-width="10"/><text x="${sx(-300)}" y="${sy(y)+45}" font-size="130" text-anchor="middle" font-weight="600">${k}</text>`;
+  g+=`<rect x="${sx(0)}" y="${sy(0)}" width="${W}" height="${H}" fill="none" stroke="#d8d2c8" stroke-width="14"/>`;
+  const rev={'A-1':1,'B-1':1};
+  for(const a of 'ABCD') for(const e of [1,2,3]){ const id=a+'-'+e, on=rev[id]; g+=`<rect x="${sx(X[e])-60}" y="${sy(Y[a])-60}" width="120" height="120" fill="${on?'#C3360E':'#8a8f98'}"/>`; if(on) g+=`<text x="${sx(X[e])+110}" y="${sy(Y[a])+45}" font-size="120" font-weight="700" fill="#C3360E">${id}</text>`; }
+  [[0,468],[0,1529+798],[0,3124+810],[995,H],[1990+875,H]].forEach(([x,y],i)=>{ const on=i===0; g+=`<rect x="${sx(x)-50}" y="${sy(y)-70}" width="100" height="140" fill="${on?'#C3360E':'#8a8f98'}"/>`; if(on) g+=`<text x="${sx(x)+110}" y="${sy(y)+45}" font-size="120" font-weight="700" fill="#C3360E">Poste eje 1 (a 4.68 m de A)</text>`; });
+  g+=`<g transform="translate(${sx(W)-900},${sy(H)+250})"><rect width="120" height="120" fill="#C3360E" y="-90"/><text x="160" y="20" font-size="110">Revisado</text><rect x="760" width="120" height="120" fill="#8a8f98" y="-90"/><text x="920" y="20" font-size="110">Otros</text></g>`;
+  return g+`</svg><div style="font-size:12px;color:var(--gris);margin-top:6px">Planta esquemática según CIM-04 (cotas entre ejes en cm). En rojo, los 3 dados con anclas coladas que se revisaron.</div>`;
+}
+
+function detalleDado(d, k, setK){
+  const w = h('div');
+  w.append(h('div',{class:'dado-res'},`<div><b>${f1(d.prom_cor_d)} mm</b>desfase promedio</div><div><b>${f1(d.max_cor_d)} mm</b>desfase máximo</div><div><b>${f1(d.max_desplome)} mm</b>desplome máximo</div><div><b>${f1(d.dispersion_max)} mm</b>diferencia máx. entre anclas</div>`));
+  const g = h('div',{class:'dado-grid'});
+  const pb = h('div',{class:'plan-box'});
+  const ctrl = h('div',{class:'ctrl'},'Exagerar desviaciones: ');
+  const sel = h('select'); [1,3,5].forEach(v=>{ const o=h('option',{value:v},'×'+v); if(v===k) o.selected=true; sel.append(o); });
+  sel.onchange = ()=>setK(+sel.value); ctrl.append(sel); pb.append(ctrl);
+  pb.insertAdjacentHTML('beforeend', planDado(d,k) + simb(['hp','pp','ho','hb','de','dp','pr']));
+  g.append(pb);
+  const t = h('div',{class:'card scroll',style:'padding:10px'});
+  t.innerHTML = `<table class="tabla"><thead><tr><th>#</th><th class="num">Proy. u, v</th><th class="num">Desf. u</th><th class="num">Desf. v</th><th class="num">Desfase</th><th class="num">Desplome</th><th class="num">Nivel corona</th></tr></thead><tbody>
+  ${d.anclas.map(a=>`<tr><td><b>${a.n}</b></td><td class="num">${a.proy_u}, ${a.proy_v}</td><td class="num">${f1(a.cor_du)}</td><td class="num">${f1(a.cor_dv)}</td><td class="num"><span class="chip ${a.cor_d>60?'r':a.cor_d>40?'a':'v'}">${f1(a.cor_d)}</span></td><td class="num">${a.desplome==null?'<span title="Base no levantada">s/d</span>':`<span class="chip ${a.desplome>L.convenciones.tol_desplome?'a':'v'}">${f1(a.desplome)}</span>`}</td><td class="num">${a.nivel_corona.toFixed(3)}</td></tr>`).join('')}
+  </tbody></table><div style="font-size:12px;color:var(--gris);margin-top:6px">mm, salvo el nivel (m respecto a NPT de la nave existente). u: eje 1 hacia B; v: hacia eje 2 (negativo = hacia el exterior). s/d: base no levantada.</div>`;
+  g.append(t); w.append(g);
+  return w;
+}
+
+function planDado(d, k){
+  const [pu,pv] = [d.placa_proyecto_mm[0]/2, d.placa_proyecto_mm[1]/2];
+  const R=480, P=d.placa_propuesta;
+  let s = `<svg viewBox="${-R-40} ${-R-20} ${2*R+80} ${2*R+70}" font-family="Inter" role="img" aria-label="Planta del dado ${d.id} con anclas">`;
+  s += `<rect x="-400" y="-400" width="800" height="800" fill="#ece7e0" stroke="#b9ada0" stroke-width="2" stroke-dasharray="10 6"/><text x="-390" y="-372" font-size="24" fill="#8a7f74">Dado 800 × 800 (posición de proyecto)</text>`;
+  s += `<rect x="${-pv}" y="${-pu}" width="${2*pv}" height="${2*pu}" fill="rgba(46,125,50,.06)" stroke="#2E7D32" stroke-width="3"/>`;
+  s += `<rect x="${P.v0}" y="${P.u0}" width="${P.ancho_v}" height="${P.largo_u}" fill="none" stroke="#C98A00" stroke-width="3" stroke-dasharray="14 8"/>`;
+  s += `<line x1="0" y1="${-R}" x2="0" y2="${R-20}" stroke="#2E7D32" stroke-width="1.5" stroke-dasharray="20 8 4 8"/><line x1="${-R}" y1="0" x2="${R}" y2="0" stroke="#2E7D32" stroke-width="1.5" stroke-dasharray="20 8 4 8"/>`;
+  for (const a of d.anclas){
+    const px=a.proy_v, py=a.proy_u, cx=px+k*a.cor_dv, cy=py+k*a.cor_du;
+    s += `<circle cx="${px}" cy="${py}" r="12" fill="none" stroke="#2E7D32" stroke-width="3.5"/>`;
+    s += `<line x1="${px}" y1="${py}" x2="${cx}" y2="${cy}" stroke="#D7261E" stroke-width="2.2"/>`;
+    if (a.base_dv!=null){ const bx=px+k*a.base_dv, by=py+k*a.base_du; s+=`<line x1="${bx}" y1="${by}" x2="${cx}" y2="${cy}" stroke="#1F5FBF" stroke-width="3"/><circle cx="${bx}" cy="${by}" r="8" fill="#1F5FBF"/>`; }
+    s += `<circle cx="${cx}" cy="${cy}" r="10" fill="#D7261E"><title>Ancla ${a.n}: desfase ${f1(a.cor_d)} mm (u ${f1(a.cor_du)}, v ${f1(a.cor_dv)}); desplome ${a.desplome==null?'s/d':f1(a.desplome)+' mm'}; nivel corona ${a.nivel_corona.toFixed(3)} m</title></circle>`;
+    const ox = px<0?-36:36, oy = py<0?-26:40;
+    s += `<text x="${px+ox}" y="${py+oy}" font-size="30" font-weight="700" text-anchor="middle" fill="#211915">${a.n}</text>`;
+  }
+  s += `<g font-size="26" fill="#211915" font-weight="600"><text x="${R-10}" y="${R+40}" text-anchor="end">→ hacia eje 2 (v+)</text><text x="${-R-10}" y="${R+40}">↓ hacia eje B (u+)</text></g>`;
+  if (k>1) s += `<text x="0" y="${-R+2}" text-anchor="middle" font-size="26" fill="#D7261E" font-weight="700">Desviaciones exageradas ×${k}</text>`;
+  return s + `</svg>`;
+}
+
+function enSitio(d){
+  // placa a escala real (sin exagerar): proyecto contra posición en obra y placa propuesta con barrenos agrandados
+  const P=d.placa_propuesta, pu=d.placa_proyecto_mm[0]/2, pv=d.placa_proyecto_mm[1]/2;
+  const v0=Math.min(P.v0,-pv)-190, v1=Math.max(P.v1,pv)+70, u0=Math.min(P.u0,-pu)-70, u1=Math.max(P.u1,pu)+90;
+  let s=`<svg viewBox="${v0} ${u0} ${v1-v0} ${u1-u0}" font-family="Inter" role="img" aria-label="Placa ${d.placa} en sitio">`;
+  s+=`<rect x="${P.v0}" y="${P.u0}" width="${P.ancho_v}" height="${P.largo_u}" fill="#FBF1DA" stroke="#C98A00" stroke-width="3" stroke-dasharray="14 8"/>`;
+  s+=`<rect x="${-pv}" y="${-pu}" width="${2*pv}" height="${2*pu}" fill="none" stroke="#2E7D32" stroke-width="3"/>`;
+  for (const a of d.anclas){ const px=a.proy_v, py=a.proy_u, cx=px+a.cor_dv, cy=py+a.cor_du;
+    s+=`<circle cx="${px}" cy="${py}" r="10.5" fill="none" stroke="#2E7D32" stroke-width="3"/><circle cx="${cx}" cy="${cy}" r="${BAR/2}" fill="none" stroke="#C98A00" stroke-width="3"/><line x1="${px}" y1="${py}" x2="${cx}" y2="${cy}" stroke="#D7261E" stroke-width="2.5"/><circle cx="${cx}" cy="${cy}" r="9.5" fill="#D7261E"/>`;
+    s+=`<text x="${cx+(px<0?-24:24)}" y="${cy+(py<0?-14:30)}" font-size="22" text-anchor="${px<0?'end':'start'}" fill="#211915">${a.n}: ${Math.round(a.cor_d)}</text>`; }
+  s+=`<text x="${(P.v0+P.v1)/2}" y="${P.u1+50}" font-size="26" font-weight="700" text-anchor="middle" fill="#C98A00">${P.ancho_v} mm</text>`;
+  s+=`<text x="${P.v0-20}" y="${(P.u0+P.u1)/2}" font-size="26" font-weight="700" text-anchor="end" fill="#C98A00">${P.largo_u} mm</text>`;
+  return s+`</svg>`;
+}
+
+// --- fotos ---
+{ const s = h('section',{id:'fotos'}); main.append(s); tocLink('fotos','Fotos'); n++;
+  s.append(h('h2',{},`<span class="n">${String(n).padStart(2,'0')}</span>Registro fotográfico`));
+  const g = h('div',{class:'galeria'});
+  C.fotos.forEach((it,i) => { const fig=h('figure'); fig.innerHTML=`<img loading="lazy" src="img/fotos/${it.archivo}" alt=""><figcaption><b>Foto ${i+1}.</b> ${it.pie}</figcaption>`; fig.onclick=()=>lightbox('img/fotos/'+it.archivo, it.pie); g.append(fig); });
+  s.append(g); }
+
+// --- anexo: proyecto contra en sitio ---
+{ const s = h('section',{id:'anexo'}); main.append(s); tocLink('anexo','Anexo'); n++;
+  s.append(h('h2',{},`<span class="n">${String(n).padStart(2,'0')}</span>Anexo: placas según proyecto y como están en sitio`));
+  s.append(h('p',{style:'margin:0 0 12px;color:var(--gris);font-size:14px'},'A la izquierda, la placa según el plano CIM-04 rev. V004. A la derecha, la misma placa a escala real, sin exagerar, con las anclas como quedaron según el levantamiento (número de ancla: desfase en mm) y la placa ampliada propuesta con barrenos agrandados.'));
+  const usados = new Set();
+  for (const d of L.dados){
+    const arch = `CIM-04_${d.placa}.png`; const f = C.recortes.find(x=>x.archivo===arch); if (!f) continue; usados.add(arch);
+    const c = h('div',{class:'comp'});
+    c.innerHTML = `<div><div class="t p">Según proyecto</div><img src="img/planos/${arch}" alt=""><div class="pie">${f.pie}</div></div>
+      <div><div class="t o">En sitio · ${nombreDado(d)}</div>${enSitio(d)}${simb(['hp','pp','ho','de','pr','bh'])}<div class="pie">Desfase máximo ${f1(d.max_cor_d)} mm. Placa ampliada propuesta ${d.placa_propuesta.largo_u} × ${d.placa_propuesta.ancho_v} mm con barrenos Ø${BAR}.</div></div>`;
+    $('img',c).onclick = () => lightbox('img/planos/'+arch, f.pie);
+    s.append(c);
+  }
+  s.append(h('h3',{},'Otros detalles de proyecto'));
+  const g = h('div',{class:'galeria planos'});
+  C.recortes.filter(x=>!usados.has(x.archivo)).forEach(it => { const fig=h('figure'); fig.innerHTML=`<img loading="lazy" src="img/planos/${it.archivo}" alt=""><figcaption>${it.pie}</figcaption>`; fig.onclick=()=>lightbox('img/planos/'+it.archivo, it.pie); g.append(fig); });
+  s.append(g); }
+
+// --- descargas y firma ---
+{ const s = h('section',{id:'descargas'}); main.append(s); tocLink('descargas','Descargas'); n++;
+  s.append(h('h2',{},`<span class="n">${String(n).padStart(2,'0')}</span>Descargas`));
+  const g = h('div',{class:'descargas'});
+  (C.descargas||[]).forEach(x => { const ext=x.archivo.split('.').pop().toUpperCase();
+    g.append(h('a',{class:'desc '+ext.toLowerCase(),href:'descargas/'+encodeURIComponent(x.archivo),download:''},`<div class="ic">${ext}</div><div><b>${x.titulo}</b><span>${x.detalle}</span></div>`)); });
+  s.append(g); }
+main.append(h('div',{class:'firma'},`<div>Atentamente,</div><div class="linea"></div><b>${C.firma.nombre}</b><div>${C.firma.cargo}</div><div>${C.firma.empresa}</div>`));
+$('#pie-izq').textContent = 'ARCA Infraestructura & Construcción · GRUPO ARCA';
+$('#pie-der').textContent = `${C.proyecto} · ${C.folio} · ${C.fecha}`;
+const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) [...toc.children].forEach(a => a.classList.toggle('on', a.getAttribute('href')==='#'+e.target.id)); }), {rootMargin:'-40% 0px -55% 0px'});
+document.querySelectorAll('main section, #fichas').forEach(s => obs.observe(s));
+</script>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+const D = JSON.parse(document.getElementById('datos').textContent);
+const L = D.levantamiento, C = D.contenido;
+const BAR = (C.barreno_propuesto||{}).diametro_mm || 33;
+const el = document.getElementById('visor');
+if (matchMedia('(max-width:860px)').matches) document.getElementById('capas').removeAttribute('open');
+iniciar().catch(e => { document.getElementById('carga').textContent = 'No se pudo cargar el modelo 3D: ' + e.message; });
+
+async function iniciar(){
+  const idx = await (await fetch('data/modelo.json')).json();
+  const buf = await (await fetch('data/modelo.bin')).arrayBuffer();
+  const O = idx.origen_modelo_mm;
+  const P = (x,y,z) => new THREE.Vector3(x, z, -y);                       // modelo (m) -> three
+  const M = (xm, ym, z=0) => P((xm-O[0])/1000, (ym-O[1])/1000, z);        // modelo (mm) -> three
+
+  const W = el.clientWidth, H = el.clientHeight;
+  const renderer = new THREE.WebGLRenderer({antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.setSize(W,H);
+  el.prepend(renderer.domElement);
+  const lab = new CSS2DRenderer(); lab.setSize(W,H); Object.assign(lab.domElement.style,{position:'absolute',top:0,left:0,pointerEvents:'none'}); el.insertBefore(lab.domElement, el.querySelector('.capas'));
+  const scene = new THREE.Scene(); scene.background = new THREE.Color('#e9ecef');
+  const cam = new THREE.PerspectiveCamera(40, W/H, 0.01, 500);
+  const ctl = new OrbitControls(cam, renderer.domElement); ctl.enableDamping = true;
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x8d8378, 1.1));
+  const sol = new THREE.DirectionalLight(0xffffff, 1.4); sol.position.set(-20,40,25); scene.add(sol);
+
+  const G = {estructura:new THREE.Group(), muros:new THREE.Group(), proyecto:new THREE.Group(), real:new THREE.Group(), propuesta:new THREE.Group(), etiquetas:new THREE.Group()};
+  Object.values(G).forEach(g => scene.add(g)); G.muros.visible = false;
+
+  // modelo estructural del proyecto
+  for (const c of idx.capas){
+    const a = new Float32Array(buf, c.offset*4, c.count), p = new Float32Array(c.count);
+    for (let i=0;i<c.count;i+=3){ p[i]=a[i]; p[i+1]=a[i+2]; p[i+2]=-a[i+1]; }
+    if (c.capa==='S-COLS'){
+      const abajo=[], arriba=[];
+      for (let i=0;i<p.length;i+=9){ const zc=(p[i+1]+p[i+4]+p[i+7])/3; (zc>0.02?arriba:abajo).push(...p.subarray(i,i+9)); }
+      for (const [arr,trans] of [[abajo,false],[arriba,true]]){
+        const gg=new THREE.BufferGeometry(); gg.setAttribute('position', new THREE.BufferAttribute(new Float32Array(arr),3)); gg.computeVertexNormals();
+        G.estructura.add(new THREE.Mesh(gg, trans ? new THREE.MeshStandardMaterial({color:'#9aa3ad', roughness:.6, metalness:.2, transparent:true, opacity:.22, depthWrite:false, side:THREE.DoubleSide})
+                                                  : new THREE.MeshStandardMaterial({color:'#c9c1b6', roughness:.95, side:THREE.DoubleSide, flatShading:true})));
+      }
+      continue;
+    }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(p,3)); g.computeVertexNormals();
+    (c.capa==='A-WALL' ? G.muros : G.estructura).add(new THREE.Mesh(g, new THREE.MeshStandardMaterial({color:c.color, roughness:.85, side:THREE.DoubleSide, flatShading:true})));
+  }
+
+  // ejes
+  const zF = -1.30, EX = {1:0, 2:19.9, 3:37.4}, EY = {A:0, B:-15.29, C:-31.24, D:-47.43};
+  const lm = new THREE.LineDashedMaterial({color:0x6b6b6b, dashSize:.6, gapSize:.3});
+  const etiqueta = (txt, cls, pos, grupo=scene) => { const d=document.createElement('div'); d.className='etq '+cls; d.innerHTML=txt; const o=new CSS2DObject(d); o.position.copy(pos); grupo.add(o); return o; };
+  const eje = (a,b,t,pos) => { const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints([a,b]),lm); l.computeLineDistances(); scene.add(l); etiqueta(t,'eje',pos); };
+  for (const [k,x] of Object.entries(EX)) eje(P(x,2,zF), P(x,-49,zF), k, P(x,3.2,zF));
+  for (const [k,y] of Object.entries(EY)) eje(P(-2,y,zF), P(39,y,zF), k, P(-3.2,y,zF));
+
+  const COL = {proy:'#2E7D32', obra:'#D7261E', base:'#1F5FBF', prop:'#C98A00'};
+  const Rr = 0.0095, hP = 0.15, zPl = 0.05;
+  const mat = c => new THREE.MeshStandardMaterial({color:c, roughness:.45, metalness:.2});
+  const matV = mat(COL.proy), matR = mat(COL.obra), matB = mat(COL.base);
+  const cil = (a,b,m,r=Rr) => { const v=new THREE.Vector3().subVectors(b,a); const me=new THREE.Mesh(new THREE.CylinderGeometry(r,r,v.length(),14), m);
+    me.position.copy(a).addScaledVector(v,.5); me.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), v.clone().normalize()); return me; };
+  // placa con barrenos: forma en (v,u) local en metros, extruida hacia abajo
+  const placa = (d, u0,u1,v0,v1, huecos, rHueco, color, opac, zTop) => {
+    const sh = new THREE.Shape(); sh.moveTo(v0/1000,u0/1000); sh.lineTo(v1/1000,u0/1000); sh.lineTo(v1/1000,u1/1000); sh.lineTo(v0/1000,u1/1000); sh.closePath();
+    for (const [u,v] of huecos){ const hp=new THREE.Path(); hp.absarc(v/1000,u/1000,rHueco/1000,0,Math.PI*2,true); sh.holes.push(hp); }
+    const g = new THREE.ExtrudeGeometry(sh,{depth:0.019,bevelEnabled:false,curveSegments:20}); g.rotateX(Math.PI/2);
+    const me = new THREE.Mesh(g, new THREE.MeshStandardMaterial({color, transparent:opac<1, opacity:opac, roughness:.6, metalness:.25, side:THREE.DoubleSide, depthWrite:opac>=1}));
+    me.add(new THREE.LineSegments(new THREE.EdgesGeometry(g,30), new THREE.LineBasicMaterial({color})));
+    const [cx,cy] = d.centro_modelo; me.position.set((cx-O[0])/1000, zTop, -(cy-O[1])/1000); return me;
+  };
+
+  const reales = [], vistas = [{t:'Vista general', pos:P(30,-62,30), tgt:P(12,-22,-2), dado:null}];
+  for (const d of L.dados){
+    const [cx,cy] = d.centro_modelo, pu=d.placa_proyecto_mm[0]/2, pv=d.placa_proyecto_mm[1]/2, pp=d.placa_propuesta;
+    // proyecto: placa con barrenos Ø21 y anclas verdes
+    G.proyecto.add(placa(d, -pu,pu,-pv,pv, d.anclas.map(a=>[a.proy_u,a.proy_v]), 10.5, COL.proy, .35, zPl+0.019));
+    for (const a of d.anclas){ const [px,py]=a.proy_modelo; G.proyecto.add(cil(M(px,py,-0.25), M(px,py,hP), matV)); }
+    // propuesta: placa ampliada con barrenos agrandados en la posición real (corona)
+    G.propuesta.add(placa(d, pp.u0,pp.u1,pp.v0,pp.v1, d.anclas.map(a=>[a.proy_u+a.cor_du, a.proy_v+a.cor_dv]), BAR/2, COL.prop, .55, zPl+0.041));
+    // cotas de la placa propuesta y de proyecto
+    const c0 = M(cx,cy,0);
+    const local = (u,v,z) => M(cx+v, cy-u, z);
+    etiqueta(`${pp.ancho_v} mm`, 'cota', local(pp.u1+60,(pp.v0+pp.v1)/2,zPl+0.05), G.etiquetas);
+    etiqueta(`${pp.largo_u} mm`, 'cota', local((pp.u0+pp.u1)/2,pp.v0-90,zPl+0.05), G.etiquetas);
+    etiqueta(`Proyecto ${d.placa_proyecto_mm[0]}×${d.placa_proyecto_mm[1]} · Ø21`, 'cota v', local(-pu-70,0,zPl+0.03), G.etiquetas);
+    const nivProm = d.anclas.reduce((s,a)=>s+a.nivel_corona,0)/d.anclas.length;
+    for (const a of d.anclas){
+      const [px,py] = a.proy_modelo;
+      const r = { a, px, py, hc: hP + (a.nivel_corona - nivProm), objs:[] };
+      r.lab = etiqueta(`${a.n} · ${Math.round(a.cor_d)} mm`, 'ancla', M(a.corona_modelo[0], a.corona_modelo[1], r.hc+0.03), G.etiquetas);
+      r.lab.userData.dado = d.id; reales.push(r);
+    }
+    etiqueta(`${d.id==='1-AB'?'Poste eje 1':'Dado '+d.id} · desfase máx. ${d.max_cor_d.toFixed(1)} mm · placa propuesta ${pp.largo_u}×${pp.ancho_v}`, '', c0.clone().add(new THREE.Vector3(0,.62,0)));
+    vistas.push({t: d.id==='1-AB'?'Poste eje 1 (A–B)':'Dado '+d.id, pos:c0.clone().add(new THREE.Vector3(0.95,0.95,0.85).multiplyScalar(el.clientWidth<700?1.7:1)), tgt:c0.clone().add(new THREE.Vector3(0,.06,0)), dado:d.id, c:c0});
+  }
+  const construir = k => {
+    reales.forEach(r => { r.objs.forEach(o => G.real.remove(o)); r.objs = []; const a=r.a;
+      const cxm = r.px + k*(a.corona_modelo[0]-r.px), cym = r.py + k*(a.corona_modelo[1]-r.py);
+      const b = a.base_modelo ? [r.px + k*(a.base_modelo[0]-r.px), r.py + k*(a.base_modelo[1]-r.py)] : [cxm,cym];
+      const top = M(cxm,cym,r.hc), bot = M(b[0],b[1],0);
+      r.objs.push(cil(M(b[0],b[1],-0.25), bot, matR, Rr*1.05), cil(bot, top, matR, Rr*1.05));
+      if (a.base_modelo){ const sb = new THREE.Mesh(new THREE.SphereGeometry(Rr*1.9,16,12), matB); sb.position.copy(bot); r.objs.push(sb); }
+      // desfase: línea roja de la punta de proyecto a la punta en obra
+      const pTop = M(r.px, r.py, hP+0.004), oTop = M(cxm, cym, r.hc+0.004);
+      r.objs.push(new THREE.Line(new THREE.BufferGeometry().setFromPoints([pTop,oTop]), new THREE.LineBasicMaterial({color:COL.obra, linewidth:2})));
+      r.objs.forEach(o => G.real.add(o)); r.lab.position.copy(top).add(new THREE.Vector3(0,.03,0)); });
+  };
+  construir(1);
+
+  el.querySelectorAll('input[data-c]').forEach(i => i.onchange = () => { G[i.dataset.c].visible = i.checked; });
+  const ex = document.getElementById('exag'); ex.oninput = () => { document.getElementById('kx').textContent='×'+ex.value; construir(+ex.value); };
+  const vb = document.getElementById('vistas'); let anim=null;
+  vistas.forEach((v,i) => { const b=document.createElement('button'); b.textContent=v.t; b.onclick=()=>ir(i); vb.append(b); });
+  function ir(i){ [...vb.children].forEach((b,j)=>b.classList.toggle('on',i===j)); const v=vistas[i];
+    const p0=cam.position.clone(), t0=ctl.target.clone(), t=performance.now();
+    anim = () => { const s=Math.min(1,(performance.now()-t)/900), e=s<.5?2*s*s:1-Math.pow(-2*s+2,2)/2;
+      cam.position.lerpVectors(p0,v.pos,e); ctl.target.lerpVectors(t0,v.tgt,e); if (s>=1) anim=null; }; }
+  // etiquetas de anclas sólo del dado que se está viendo de cerca
+  const cercano = () => { let best=null, dmin=1e9; for (const v of vistas) if (v.c){ const dd=v.c.distanceTo(ctl.target); if (dd<dmin){dmin=dd;best=v;} }
+    const cerca = cam.position.distanceTo(ctl.target) < 4.5 && dmin < 2.5;
+    G.etiquetas.children.forEach(o => { o.visible = !!(cerca && (!o.userData.dado || o.userData.dado===best.dado) && (o.userData.dado || o.position.distanceTo(best.c) < 1.5)); }); };
+  cam.position.copy(vistas[1].pos); ctl.target.copy(vistas[1].tgt); vb.children[1].classList.add('on');
+  document.getElementById('carga').remove();
+  new ResizeObserver(() => { const w=el.clientWidth, hh=el.clientHeight; renderer.setSize(w,hh); lab.setSize(w,hh); cam.aspect=w/hh; cam.updateProjectionMatrix(); }).observe(el);
+  (function loop(){ requestAnimationFrame(loop); if (anim) anim(); ctl.update(); if (G.etiquetas.visible) cercano(); renderer.render(scene,cam); lab.render(scene,cam); })();
+}
+</script>
+</body>
+</html>

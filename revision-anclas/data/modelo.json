@@ -1,0 +1,45 @@
+{
+ "origen_modelo_mm": [
+  -17377.4,
+  204.3,
+  1960.0
+ ],
+ "unidades": "m",
+ "capas": [
+  {
+   "capa": "S-COLS",
+   "nombre": "Columnas y dados",
+   "color": "#8a8f98",
+   "offset": 0,
+   "count": 60876
+  },
+  {
+   "capa": "S-BEAM",
+   "nombre": "Vigas y largueros",
+   "color": "#a7adb6",
+   "offset": 60876,
+   "count": 360549
+  },
+  {
+   "capa": "S-FNDN",
+   "nombre": "Cimentaci\u00f3n",
+   "color": "#b9ada0",
+   "offset": 421425,
+   "count": 2880
+  },
+  {
+   "capa": "A-WALL",
+   "nombre": "Muros",
+   "color": "#d8d2c8",
+   "offset": 424305,
+   "count": 5040
+  },
+  {
+   "capa": "A-FLOR",
+   "nombre": "Firmes",
+   "color": "#cfc8bd",
+   "offset": 429345,
+   "count": 1188
+  }
+ ]
+}
